@@ -17,13 +17,19 @@ PUT - Modificar un recurso completo
 DELETE - Eliminar un recurso
 */
 
-app.use("/pokemon", pokemon);
 
 // "/" Se refiere a la raiz
 app.get("/", (req, res, next)=>{
-    return res.status(200).send("Bienvenido al Pokedex!");
+    return res.status(200).json({code: 200, message: "Bienvenido al Pokedex!"});
 });
 
+//Ruta pokemon
+app.use("/pokemon", pokemon);
+
+//Ruta no encontrada
+app.use((req, res, next) => {
+    return res.status(404).json({code: 404, message: "URL not found"});
+});
 
 //Abrir un servidor especificando el puerto
 app.listen(process.env.PORT || 3000, () => {
