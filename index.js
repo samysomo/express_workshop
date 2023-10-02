@@ -25,6 +25,7 @@ app.get("/", (req, res, next)=>{
 
 //Ruta pokemon
 app.use("/pokemon", pokemon);
+app.use("/user", user);
 
 //Ruta no encontrada
 app.use((req, res, next) => {
