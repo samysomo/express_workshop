@@ -3,6 +3,7 @@ const express = require("express");
 //Instancia de express
 const app = express();
 const pokemon = require("./routes/pokemon");
+const user = require("./routes/user")
 const morgan = require("morgan");
 
 app.use(morgan("dev"));
