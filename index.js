@@ -2,9 +2,16 @@ const express = require("express");
 
 //Instancia de express
 const app = express();
+
+//Routers
 const pokemon = require("./routes/pokemon");
 const user = require("./routes/user")
 const morgan = require("morgan");
+
+//Middleware
+const auth = require("./middleware/auth");
+const notFound = require("./middleware/notFound");
+const index = require("./middleware/index");
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -20,18 +27,19 @@ DELETE - Eliminar un recurso
 
 
 // "/" Se refiere a la raiz
-app.get("/", (req, res, next)=>{
-    return res.status(200).json({code: 200, message: "Bienvenido al Pokedex!"});
-});
+app.get("/", index);
+
+//Ruta user
+app.use("/user", user);
+
+//Obtener y decodificar el token de autenticacion del usuario de su peticion
+app.use(auth);
 
 //Ruta pokemon
 app.use("/pokemon", pokemon);
-app.use("/user", user);
 
 //Ruta no encontrada
-app.use((req, res, next) => {
-    return res.status(404).json({code: 404, message: "URL not found"});
-});
+app.use(notFound);
 
 //Abrir un servidor especificando el puerto
 app.listen(process.env.PORT || 3000, () => {
